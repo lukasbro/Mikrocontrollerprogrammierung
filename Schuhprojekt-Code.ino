@@ -1,8 +1,9 @@
 #include <Adafruit_NeoPixel.h>
 
-#define LEDNUM 23   //Number of LEDs
-#define PIN 6       //Digital Output for LED-Strip (FLORA 10)
-#define MAXF 6      //Max Count of Modes
+#define LEDNUM      23      //Number of LEDs
+#define HEADLIGHT   3       //Number of LEDs for Headlight
+#define PIN         6       //Digital Output for LED-Strip (FLORA 10)
+#define MAXF        6       //Max Count of Modes
 
 const int interruptPin = 2; //Digital Output for Interrupt-Button (FLORA 1)
 volatile int state = 0;     //Current Mode
@@ -147,7 +148,7 @@ void showLight() {
   for(uint16_t i=0; i<strip.numPixels(); i++) {
     double m = 1;
     
-    if(i > (LEDNUM / 2 - 3) && i < (LEDNUM / 2 + 3)) {
+    if(i > (LEDNUM / 2 - HEADLIGHT) && i < (LEDNUM / 2 + HEADLIGHT)) {
       m = 255;
     } else {
       m = 0;
