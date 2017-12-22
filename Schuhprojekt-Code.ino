@@ -1,15 +1,18 @@
 #include <Adafruit_NeoPixel.h>
 
-#define PIN 6
-#define MAXF 5
+#define LEDNUM 23   //Number of LEDs
+#define PIN 6       //Digital Output for LED-Strip
+#define MAXF 6      //Max Count of Modes
 
-const int interruptPin = 2;
-volatile int state = 0;
+const int interruptPin = 2; //Digital Output for Interrupt-Button
+volatile int state = 0;     //Current Mode
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(44, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
+  //Start Serial-Communication
   Serial.begin(9600);
+  
   pinMode(interruptPin, INPUT_PULLUP);
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
@@ -33,9 +36,13 @@ void loop() {
     case 4:
       rainbowCycle(20, 2);
       break;
+    case 5:
+      showLight();
+      break;
   }
 }
 
+//Interrupt-Handler for Button-Press
 void handler() {
   int sensorVal = digitalRead(interruptPin);
   
@@ -59,6 +66,7 @@ int breakFunction(int num) {
   }
 }
 
+//Triggers all modes in a row
 void wheelstart() {
   // Some example procedures showing how to display to the pixels:
   colorWipe(strip.Color(255, 0, 0), 50, 0); // Red
@@ -130,5 +138,21 @@ uint32_t Wheel(byte WheelPos) {
   } else {
    WheelPos -= 170;
    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+}
+
+//Light-Mode for LED-Strip
+void showLight() {
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+    double m = 1;
+    
+    if(i > (LEDNUM / 2 - 3) && i < (LEDNUM / 2 + 3)) {
+      m = 255;
+    } else {
+      m = 0;
+    }
+    
+    strip.setPixelColor(i, strip.Color(m, m, m));
+    strip.show();
   }
 }
