@@ -1,10 +1,10 @@
 #include <Adafruit_NeoPixel.h>
 
 #define LEDNUM 23   //Number of LEDs
-#define PIN 6       //Digital Output for LED-Strip
+#define PIN 6       //Digital Output for LED-Strip (FLORA 10)
 #define MAXF 6      //Max Count of Modes
 
-const int interruptPin = 2; //Digital Output for Interrupt-Button
+const int interruptPin = 2; //Digital Output for Interrupt-Button (FLORA 1)
 volatile int state = 0;     //Current Mode
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
@@ -90,6 +90,7 @@ void colorWipe(uint32_t c, uint8_t wait, int stat) {
   }
 }
 
+//Shows a rainbow
 void rainbow(uint8_t wait, uint8_t fnumber) {
   uint16_t i, j;
 
@@ -156,3 +157,4 @@ void showLight() {
     strip.show();
   }
 }
+
