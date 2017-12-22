@@ -38,10 +38,14 @@ void loop() {
 
 void handler() {
   int sensorVal = digitalRead(interruptPin);
+  
+  Serial.print("Button Value: ");
   Serial.println(sensorVal);
+  Serial.print("State: ");
+  Serial.println(state);
   
   if(sensorVal == LOW) {
-    if(state < MAXF) {
+    if(state + 1 < MAXF) {
       state++;
     } else {
       state = 0;
@@ -49,8 +53,8 @@ void handler() {
   }
 }
 
-int breakFunction(int num){
-  if(state != num){
+int breakFunction(int num) {
+  if(state != num) {
 
   }
 }
@@ -84,12 +88,12 @@ void rainbow(uint8_t wait) {
   for(j=0; j<256; j++) {
     for(i=0; i<strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel((i+j) & 255));
-      if(state != 1){
+      if(state != 3){
         break;
       }
     }
     strip.show();
-    if(state != 1){
+    if(state != 3){
       break;
     }
     delay(wait);
@@ -128,5 +132,3 @@ uint32_t Wheel(byte WheelPos) {
    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
 }
-
-
