@@ -224,10 +224,10 @@ uint32_t Wheel(byte WheelPos) {
  * Light-Mode for LED-Strip
  */
 void showLight() {
-  for(uint16_t i=0; i<strip.numPixels(); i++) {
+  for(uint8_t i=0; i<strip.numPixels(); i++) {
     double m = 1;
     
-    if(i > (LEDNUM / 2 - HEADLIGHT) && i < (LEDNUM / 2 + HEADLIGHT)) {
+    if(i + 1 > (LEDNUM / 2 - HEADLIGHT) && i < (LEDNUM / 2 + HEADLIGHT)) {
       m = 255;
     } else {
       m = 0;
