@@ -1,16 +1,17 @@
-/*#include <Adafruit_TSL2591.h>
-#include <Adafruit_Sensor.h>*/
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_TSL2561_U.h>
 #include <Adafruit_NeoPixel.h>
 
-#define LEDNUM      44      // Number of LEDs
+#define LEDNUM      44      // Number of LEDs (Flora 44)
 #define HEADLIGHT   3       // Number of LEDs for Headlight
 #define PIN         10      // Digital Output for LED-Strip (FLORA 10)
-#define LUXSDA      A4      // Analog-Input for Lux-Sensor SDA
-#define LUXSCL      A5      // Analog-Input for Lux-Sensor SCL
+#define LUXSDA      A4      // Analog-Input for Lux-Sensor SDA (Flora 2)
+#define LUXSCL      A5      // Analog-Input for Lux-Sensor SCL (Flora 3)
 #define MAXF        6       // Max Count of Modes
 
 const uint8_t interruptPinState   = 1;    // Digital Output for Interrupt-Button (State) (FLORA 1)
-const uint8_t interruptPinBright  = 0;    // Digital Output for Interrupt-Button (Brightness) (FLORA ?)
+const uint8_t interruptPinBright  = 0;    // Digital Output for Interrupt-Button (Brightness) (FLORA 0)
 volatile uint8_t state            = 0;    // Current Mode
 volatile uint8_t bright           = 50;   // Current Brightness
 
@@ -18,7 +19,7 @@ volatile uint8_t bright           = 50;   // Current Brightness
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
 
 // Lux-Sensor
-// Adafruit_TSL2591 tsl = Adafruit_TSL2591(1);
+Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
 
 /*
  * Setup-Function
@@ -237,5 +238,4 @@ void showLight() {
     strip.show();
   }
 }
-
 
