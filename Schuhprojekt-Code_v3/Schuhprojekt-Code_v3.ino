@@ -79,7 +79,7 @@ void loop() {
   }
 
   /* Measure Brightness and convert to 0-255 */ 
-  if(bright == 3) {
+  if(bright == 4) {
     sensors_event_t event;
     tsl.getEvent(&event);
 
@@ -160,7 +160,7 @@ void configureSensor() {
  * @lux: Measured Lux-Value to Convert
  */
 void luxToBrightness(uint16_t lux) {
-  brightness = (int)(lux / 40000 * 255);
+  brightness = (int)(lux / 66000 * 255);
 }
 
 /*
