@@ -369,8 +369,7 @@ void showLight() {
  * twinkle mode
  */
 void twinkle() {
-    uint8_t  i;
-    i = random(LEDNUM);
+    uint8_t  i = random(LEDNUM);
     strip.setPixelColor(i, 255, 255, 255);
     strip.show();
     delay(50);
