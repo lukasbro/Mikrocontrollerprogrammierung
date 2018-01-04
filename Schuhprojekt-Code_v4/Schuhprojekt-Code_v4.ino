@@ -7,7 +7,7 @@
 #define PIN         6       // Digital Output for LED-Strip (FLORA 10)
 #define LUXSDA      A4      // Analog-Input for Lux-Sensor SDA (Flora 2)
 #define LUXSCL      A5      // Analog-Input for Lux-Sensor SCL (Flora 3)
-#define MAXF        7       // Max Count of Modes
+#define MAXF        8       // Max Count of Modes
 
 const uint8_t interruptPinState   = 2;    // Digital Output for Interrupt-Button (State) (FLORA 1)
 const uint8_t interruptPinBright  = 3;    // Digital Output for Interrupt-Button (Brightness) (FLORA 0)
@@ -77,6 +77,9 @@ void loop() {
       break;
     case 6:
       showLight();
+      break;
+    case 7:
+      twinkle();
       break;
   }
 
@@ -362,4 +365,14 @@ void showLight() {
   }
 }
 
-
+/*
+ * twinkle mode
+ */
+void twinkle() {
+    uint8_t  i;
+    i = random(LEDNUM);
+    strip.setPixelColor(i, 255, 255, 255);
+    strip.show();
+    delay(50);
+    strip.setPixelColor(i, 0, 0, 0);
+}
