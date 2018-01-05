@@ -7,7 +7,7 @@
 #define PIN         6       // Digital Output for LED-Strip (FLORA 10)
 #define LUXSDA      A4      // Analog-Input for Lux-Sensor SDA (Flora 2)
 #define LUXSCL      A5      // Analog-Input for Lux-Sensor SCL (Flora 3)
-#define MAXF        9       // Max Count of Modes
+#define MAXF        12       // Max Count of Modes
 
 const uint8_t interruptPinState   = 2;    // Digital Output for Interrupt-Button (State) (FLORA 1)
 const uint8_t interruptPinBright  = 3;    // Digital Output for Interrupt-Button (Brightness) (FLORA 0)
@@ -84,14 +84,15 @@ void loop() {
     case 8:
       strobe();
       break;
-/*
     case 9:
       randomFade(random(255), random(255), random(255), 10, 9);
       break;
     case 10:
-      theaterChaseRainbow(50, 10);
+      rainbowChase(50, 10);
       break;
-*/
+    case 11:
+      ray(random(255), random(255), random(255), 11);
+      break;
   }
 
   /* Measure Brightness and convert to 0-255 */ 
@@ -380,9 +381,7 @@ void showLight() {
  * twinkle mode
  */
 void twinkle() {
-  for(uint8_t i=0; i<strip.numPixels(); i++) {
-    strip.setPixelColor(i, 0, 0, 0);
-  }
+  clearStrip();
   uint8_t  j = random(LEDNUM);
   strip.setPixelColor(j, 255, 255, 255);
   strip.show();
@@ -390,15 +389,11 @@ void twinkle() {
   strip.setPixelColor(j, 0, 0, 0);
 }
 
-
 /*
  * strobe mode
  */
 void strobe() {
-  for(uint8_t i=0; i<strip.numPixels(); i++) {
-    strip.setPixelColor(i, 0, 0, 0);
-  }
-  strip.show();
+  clearStrip();
   delay(50);
   for(uint8_t j=0; j<strip.numPixels(); j++) {
     strip.setPixelColor(j, 255, 255, 255);
@@ -407,50 +402,93 @@ void strobe() {
   delay(50);
 }
 
-
-
 /*
  * fade in+out random color mode
  */
-/*
 void randomFade(uint8_t green, uint8_t red, uint8_t blue, uint8_t wait, uint8_t fnumber) {
   for(uint8_t b=0; b <255; b++) {
     for(uint8_t i=0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, green*b/255, red*b/255, blue*b/255);
+      strip.setPixelColor(i, green*b/255, red*b/255, blue*b/255, brightness);
+      if(state != fnumber){
+        break;
+      }
     }
     strip.show();
+    if(state != fnumber){
+      break;
+    }
     delay(wait);
   }
-  
+
   for(uint8_t b=255; b > 0; b--) {
     for(uint8_t i=0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, green*b/255, red*b/255, blue*b/255);
+      strip.setPixelColor(i, green*b/255, red*b/255, blue*b/255, brightness);
+      if(state != fnumber){
+        break;
+      }
     }
     strip.show();
+    if(state != fnumber){
+      break;
+    }
     delay(wait);
   }
 }
-*/
 
 /*
- * theaterChaseRainbow (aus der Beispielbibliothek)
+ * rainbowChase mode
  */
-/*
-void theaterChaseRainbow(uint8_t wait, uint8_t fnumber) {
+void rainbowChase(uint8_t wait, uint8_t fnumber) {
   for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
     for (int q=0; q < 3; q++) {
       for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
         strip.setPixelColor(i+q, Wheel( (i+j) % 255));    //turn every third pixel on
+        if(state != fnumber){
+          break;
+        }
       }
       strip.show();
       delay(wait);
+
       for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
-        if(state != fnumber){
-          exit;
-        }
         strip.setPixelColor(i+q, 0);        //turn every third pixel off
+        if(state != fnumber){
+          break;
+        }
       }
+      if(state != fnumber){
+        break;
+      }
+    }
+    if(state != fnumber){
+      break;
     }
   }
 }
-*/
+
+/*
+ * ray mode
+ */
+void ray(uint8_t green, uint8_t red, uint8_t blue, uint8_t fnumber) {
+  clearStrip();
+  for(uint16_t i=0; i<LEDNUM+7; i++) {
+    strip.setPixelColor(i, green, red, blue, brightness);
+    strip.show();
+    delay(50);
+    strip.setPixelColor(i-7, 0, 0, 0, brightness);
+    strip.show();
+    if(state != fnumber){
+      break;
+    }
+  }
+}
+
+/*
+ * clear strip function
+ */
+void clearStrip() {
+  for(uint8_t i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, 0, 0, 0);
+  }
+  strip.show();
+}
