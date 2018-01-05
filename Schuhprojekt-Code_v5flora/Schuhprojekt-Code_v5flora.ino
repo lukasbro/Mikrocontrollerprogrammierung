@@ -18,6 +18,9 @@ volatile uint8_t brightness       = 50;   // Current Brightness
 // NeoPixel-Strip
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
 
+// Status LED
+Adafruit_NeoPixel statusLED = Adafruit_NeoPixel(1, 8, NEO_GRB + NEO_KHZ800);
+
 // Lux-Sensor
 Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
 
@@ -45,6 +48,13 @@ void setup() {
   strip.begin();
   strip.show();
 
+  strip.setBrightness(40);
+  statusLED.begin();
+  statusLED.show();
+
+  statusLED.setPixelColor(0, statusLED.Color(0, 255, 0));      
+  statusLED.show();
+
   // Attach Handlers to Interrupt
   attachInterrupt(digitalPinToInterrupt(interruptPinState), handlerState, CHANGE);
   attachInterrupt(digitalPinToInterrupt(interruptPinBright), handlerBright, CHANGE);
@@ -53,16 +63,16 @@ void setup() {
 /*
  * Loop-Function
  */
-void loop() {
+void loop() { 
   switch (state) {
     case 0:
-      colorWipe(strip.Color(0, 0, 255, brightness), 50, 0);
+      colorWipe(strip.Color(0, 0, 255), 50, 0);
       break;
     case 1:
-      colorWipe(strip.Color(0, 255, 0, brightness), 50, 1);
+      colorWipe(strip.Color(0, 255, 0), 50, 1);
       break;
     case 2:
-      colorWipe(strip.Color(255, 0, 0, brightness), 50, 2);
+      colorWipe(strip.Color(255, 0, 0), 50, 2);
       break;
     case 3:
       rainbow(20, 3);
@@ -140,6 +150,8 @@ void handlerBright() {
       case 0:
         bright = 1;
         brightness = 50;
+        statusLED.setPixelColor(0, statusLED.Color(0, 255, 0));      
+        statusLED.show();
         break;
       case 1:
         bright = 2;
@@ -156,6 +168,10 @@ void handlerBright() {
       case 4:
         bright = 0;
         brightness = 0;
+
+        /* Set Status LED */
+        statusLED.setPixelColor(0, statusLED.Color(255, 0, 0));  
+        statusLED.show();
         break;
     }
   }
