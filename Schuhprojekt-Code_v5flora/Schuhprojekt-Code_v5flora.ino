@@ -14,6 +14,8 @@ const uint8_t interruptPinBright  = 0;    // Digital Output for Interrupt-Button
 volatile uint8_t state            = 0;    // Current Mode
 volatile uint8_t bright           = 1;    // Current Brightness-State
 volatile uint8_t brightness       = 50;   // Current Brightness
+volatile uint16_t broadband       = 0;
+volatile uint16_t infrared        = 0;
 
 // NeoPixel-Strip
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(LEDNUM, PIN, NEO_GRB + NEO_KHZ800);
@@ -105,12 +107,8 @@ void loop() {
 
   /* Measure Brightness and convert to 0-255 */ 
   if(bright == 3) {
-    sensors_event_t event;
-    tsl.getEvent(&event);
-
-    if (event.light) {
-      luxToBrightness(event.light);
-    }
+    tsl.getLuminosity(&broadband, &infrared);
+    luxToBrightness(broadband);
   }
 }
 
@@ -191,21 +189,22 @@ void configureSensor() {
  * @lux: Measured Lux-Value to Convert
  */
 void luxToBrightness(int lux) {
-  if(lux < 50) {
+  Serial.println(lux);
+  if(lux < 10) {
       brightness = 100;
-  } else if(lux < 100) {
+  } else if(lux < 15) {
       brightness = 80;
-  } else if(lux < 150) {
+  } else if(lux < 25) {
       brightness = 70;
-  } else if(lux < 200) {
+  } else if(lux < 35) {
       brightness = 60;
-  } else if(lux < 250) {
+  } else if(lux < 50) {
       brightness = 50;
-  } else if(lux < 300) {
+  } else if(lux < 65) {
       brightness = 40;
-  } else if(lux < 350) {
+  } else if(lux < 80) {
       brightness = 30;
-  } else if(lux < 400) {
+  } else if(lux < 100) {
       brightness = 20;
   }
 }
