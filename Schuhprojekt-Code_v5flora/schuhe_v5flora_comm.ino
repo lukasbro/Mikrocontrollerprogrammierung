@@ -186,7 +186,7 @@ void configureSensor() {
 /*
  * Convert Lux to 8 Bit and set Brightness
  * 
- * @lux: Measured Lux-Value to Convert
+ * @lux: Measured lux-value to convert
  */
 void luxToBrightness(int lux) {
   Serial.println(lux);
@@ -213,8 +213,8 @@ void luxToBrightness(int lux) {
  * Fill the dots one after the other with a color
  * 
  * @c:        Color to be set
- * @wait:     Time to wait till Change
- * @fnumber:  Number of the Function
+ * @wait:     Time to wait till change
+ * @fnumber:  Number of the function
  */
 void colorWipe(uint32_t c, uint8_t wait, uint8_t fnumber) {
   for(uint16_t i=0; i<strip.numPixels(); i++) {
@@ -233,8 +233,8 @@ void colorWipe(uint32_t c, uint8_t wait, uint8_t fnumber) {
 /*
  * Shows a rainbow
  * 
- * @wait:     Time to wait till Change
- * @fnumber:  Number of the Function
+ * @wait:     Time to wait till change
+ * @fnumber:  Number of the function
  */
 void rainbow(uint8_t wait, uint8_t fnumber) {
   uint16_t i, j;
@@ -258,8 +258,8 @@ void rainbow(uint8_t wait, uint8_t fnumber) {
 /*
  * Slightly different, this makes the rainbow equally distributed throughout
  * 
- * @wait:     Time to wait till Change
- * @fnumber:  Number of the Function
+ * @wait:     Time to wait till change
+ * @fnumber:  Number of the function
  */
 void rainbowCycle(uint8_t wait, uint8_t fnumber) {
   uint16_t i, j;
@@ -288,7 +288,7 @@ void rainbowCycle(uint8_t wait, uint8_t fnumber) {
  * Input a value 0 to 255 to get a color value.
  * The colours are a transition r - g - b - back to r.
  * 
- * @WheelPos: Curren Position in Wheel
+ * @WheelPos: Current position in wheel
  */
 uint32_t Wheel(byte WheelPos) {
   if(WheelPos < 85) {
@@ -305,7 +305,7 @@ uint32_t Wheel(byte WheelPos) {
 /*
  * Knight Rider-Style circulation
  * 
- * @fnumber:  Number of the Function
+ * @fnumber:  Number of the function
  */
 void circulate(uint8_t fnumber) {
   uint8_t i = 0;
@@ -368,7 +368,7 @@ void circulate(uint8_t fnumber) {
 }
 
 /*
- * Light-Mode for LED-Strip
+ * light mode
  */
 void showLight() {
   for(uint8_t i=0; i<strip.numPixels(); i++) {
@@ -414,7 +414,13 @@ void strobe() {
 }
 
 /*
- * fade in+out random color mode
+ * Fade in and out random color mode
+ * 
+ * @green:    Green color to be set
+ * @red:      Red color to be set
+ * @blue:     Blue color to be set
+ * @wait:     Time to wait till change
+ * @fnumber:  Number of the function
  */
 void randomFade(uint8_t green, uint8_t red, uint8_t blue, uint8_t wait, uint8_t fnumber) {
   for(uint8_t b=0; b <255; b++) {
@@ -450,6 +456,8 @@ void randomFade(uint8_t green, uint8_t red, uint8_t blue, uint8_t wait, uint8_t 
 
 /*
  * rainbowChase mode (aus der Beispielbibliothek)
+ * @wait:     Time to wait till change
+ * @fnumber:  Number of the function
  */
 void rainbowChase(uint8_t wait, uint8_t fnumber) {
   for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
@@ -483,6 +491,11 @@ void rainbowChase(uint8_t wait, uint8_t fnumber) {
 
 /*
  * ray mode
+ * 
+ * @green:    Green color to be set
+ * @red:      Red color to be set
+ * @blue:     Blue color to be set
+ * @fnumber:  Number of the function
  */
 void ray(uint8_t green, uint8_t red, uint8_t blue, uint8_t fnumber) {
   clearStrip();
